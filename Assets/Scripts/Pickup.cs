@@ -41,13 +41,10 @@ public class Pickup : MonoBehaviour
         // get the playerInput from the player
         PlayerInput playerInput = player.GetComponent<PlayerInput>();
         // handle a case where the player doesnt have a PlayerInput
-        if (playerInput == null) 
-        {
+        if (playerInput == null) {
             Debug.LogError("Player doesn't have a PlayerInput component.");
             return;
-        } 
-        else
-        {
+        } else {
             // tell the playerInput to SwapWeapon based on our weaponType
             playerInput.SwapWeapon(weaponType);
         }
