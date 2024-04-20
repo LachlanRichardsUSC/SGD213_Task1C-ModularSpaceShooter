@@ -13,10 +13,9 @@ Fix other broken collisions and layers/tags
 Fixed falling rock enemy
 Boss enemy
 Correct the vector math for enemy tripleshot
-
-To Do:
-
 Engine Interface for player/enemy/bullets/pickup
 comment and use summary tags in adherence to coding conventions
+
+To Do:
 
 bonus: IHealth interface
