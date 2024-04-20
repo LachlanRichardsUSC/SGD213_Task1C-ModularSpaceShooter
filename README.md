@@ -11,11 +11,12 @@ Fix pickup code*
 Fix player health
 Fix other broken collisions and layers/tags
 Fixed falling rock enemy
+Boss enemy
+Correct the vector math for enemy tripleshot
 
 To Do:
-Boss enemy
+
 Engine Interface for player/enemy/bullets/pickup
-Correct the vector math for enemy tripleshot
 comment and use summary tags in adherence to coding conventions
 
 bonus: IHealth interface
