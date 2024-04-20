@@ -5,8 +5,15 @@ using UnityEngine;
 public class WeaponTripleShot : WeaponBase {
 
     /// <summary>
+    /// Multiplier used for the vector calculation to determine the direction of the projectile.
+    /// </summary>
+    [SerializeField] 
+    private int directionMultiplier = 1; 
+
+    /// <summary>
     /// Shoot will spawn a three bullets, provided enough time has passed compared to our fireDelay.
     /// </summary>
+    
     public override void Shoot() {
         // get the current time
         float currentTime = Time.time;
@@ -20,7 +27,7 @@ public class WeaponTripleShot : WeaponBase {
                 // create our bullet
                 GameObject newBullet = Instantiate(bullet, bulletSpawnPoint.position, transform.rotation);
                 // set their direction
-                newBullet.GetComponent<MoveConstantly>().Direction = new Vector2(x + 0.5f * i, 0.5f);
+                newBullet.GetComponent<MoveConstantly>().Direction = new Vector2(x + 0.5f * i, 0.5f * directionMultiplier);
             }
 
             // update our shooting state
