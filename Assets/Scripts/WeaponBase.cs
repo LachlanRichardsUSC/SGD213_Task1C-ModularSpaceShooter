@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Abstract base class for all weapon types. Handles common weapon functionalities
+/// and provides a framework for specific weapon behaviors.
+/// </summary>
 public abstract class WeaponBase : MonoBehaviour
 {
-
     [Header("Controls")]
     [SerializeField]
-    protected float fireDelay = 1f;
+    // The delay between consecutive fires of the weapon
+    protected float fireDelay = 1f; 
 
     [SerializeField]
-    protected GameObject bullet;
+    // The bullet prefab that this weapon fires
+    protected GameObject bullet; 
+
+    /// <summary>
+    /// Gets or sets the bullet prefab used by this weapon.
+    /// </summary>
     public GameObject Bullet
     {
         get { return bullet; }
@@ -19,30 +26,34 @@ public abstract class WeaponBase : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    protected Transform bulletSpawnPoint;
+    // The point from which bullets are spawned
+    protected Transform bulletSpawnPoint; 
+
+    /// <summary>
+    /// Gets or sets the transform at which bullets will spawn.
+    /// </summary>
     public Transform BulletSpawnPoint
     {
         get { return bulletSpawnPoint; }
         set { bulletSpawnPoint = value; }
     }
 
-    // State
+    // The time at which the weapon last fired
     protected float lastFiredTime = 0f;
 
     /// <summary>
-    /// Shoot is intended to be the access point for shooting mechanics. In concrete implementations it is intended that it 
-    /// should only fire when enough time has passed compared to our fireDelay.
+    /// Abstract method to handle the shooting mechanism. Each derived class must implement its own shooting behavior.
+    /// Should account for the fire delay to control shooting frequency.
     /// </summary>
     public abstract void Shoot();
 
     /// <summary>
-    /// UpdateWeaponControls takes an existing WeaponBase and populates the controls of this WeaponBase with
-    /// those of the given WeaponBase
+    /// Updates the weapon controls (like bullet spawn point and bullet prefab) using another weapon's settings.
+    /// Useful for swapping weapons and retaining control settings.
     /// </summary>
-    /// <param name="oldWeapon">The existing weapon that will be used to grab WeaponBase controls from</param>
+    /// <param name="oldWeapon">The weapon whose settings are to be copied.</param>
     public virtual void UpdateWeaponControls(WeaponBase oldWeapon)
     {
-        // update the data of the new weapon with the data from this weapon
         bulletSpawnPoint = oldWeapon.BulletSpawnPoint;
         bullet = oldWeapon.Bullet;
     }

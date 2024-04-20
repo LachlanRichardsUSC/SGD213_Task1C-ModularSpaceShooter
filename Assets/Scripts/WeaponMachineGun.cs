@@ -1,22 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WeaponMachineGun : WeaponBase {
-
+/// <summary>
+/// Implements a machine gun firing mechanism. This weapon fires bullets continuously at a
+/// fixed rate defined by the fireDelay.
+/// </summary>
+public class WeaponMachineGun : WeaponBase
+{
     /// <summary>
-    /// Shoot will spawn a new bullet, provided enough time has passed compared to our fireDelay.
+    /// Overrides the Shoot method to continuously fire bullets at a rate determined by fireDelay.
+    /// Each bullet is instantiated only if enough time has passed since the last shot.
     /// </summary>
-    public override void Shoot() {
-        // get the current time
+    public override void Shoot()
+    {
         float currentTime = Time.time;
 
-        // if enough time has passed since our last shot compared to our fireDelay, spawn our bullet
-        if (currentTime - lastFiredTime > fireDelay) {
-            // create our bullet
+        // Check if the cooldown period (fireDelay) has passed to allow shooting a new bullet.
+        if (currentTime - lastFiredTime > fireDelay)
+        {
+            // Instantiate the bullet at the specified spawn point with the weapon's current orientation.
             GameObject newBullet = Instantiate(bullet, bulletSpawnPoint.position, transform.rotation);
-            // update our shooting state
+
+            // Update the last fired time to the current time after shooting.
             lastFiredTime = currentTime;
+
+            // Optionally log shooting action for debugging purposes (comment out if not needed).
+            Debug.Log("Machine gun shot fired at: " + Time.time);
         }
     }
 }

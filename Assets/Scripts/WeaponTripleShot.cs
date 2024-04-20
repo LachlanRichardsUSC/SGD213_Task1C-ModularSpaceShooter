@@ -1,37 +1,53 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WeaponTripleShot : WeaponBase {
+/// <summary>
+/// Implements a triple-shot firing mechanism. This weapon fires three bullets simultaneously
+/// with each shot spaced horizontally.
+/// </summary>
+public class WeaponTripleShot : WeaponBase
+{
+    /// <summary>
+    /// Multiplier used for the vertical component of the bullet's travel direction.
+    /// </summary>
+    [SerializeField]
+    private int directionMultiplier = 1;
 
     /// <summary>
-    /// Multiplier used for the vector calculation to determine the direction of the projectile.
+    /// Overrides the Shoot method to fire three bullets simultaneously. Bullets are fired only if 
+    /// the elapsed time since the last shot is greater than the firing delay.
     /// </summary>
-    [SerializeField] 
-    private int directionMultiplier = 1; 
-
-    /// <summary>
-    /// Shoot will spawn a three bullets, provided enough time has passed compared to our fireDelay.
-    /// </summary>
-    
-    public override void Shoot() {
-        // get the current time
+    public override void Shoot()
+    {
         float currentTime = Time.time;
+        Debug.Log("Attempting to shoot triple shot.");
 
-        print("Shoot triple shot");
-        // if enough time has passed since our last shot compared to our fireDelay, spawn our bullet
-        if (currentTime - lastFiredTime > fireDelay) {
+        // Check if the fire delay has passed since the last shot
+        if (currentTime - lastFiredTime > fireDelay)
+        {
+            // Calculate starting position for bullets to spread them horizontally
             float x = -0.5f;
-            // create 3 bullets
-            for (int i = 0; i < 3; i++) {
-                // create our bullet
-                GameObject newBullet = Instantiate(bullet, bulletSpawnPoint.position, transform.rotation);
-                // set their direction
-                newBullet.GetComponent<EngineDirection>().Direction = new Vector2(x + 0.5f * i, 0.5f * directionMultiplier);
+
+            // Instantiate and position three bullets
+            for (int i = 0; i < 3; i++)
+            {
+                GameObject newBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.identity);
+                if (newBullet.TryGetComponent(out EngineDirection engineDirection))
+                {
+                    // Adjust each bullet's horizontal position to spread them out
+                    engineDirection.Direction = new Vector2(x + 0.5f * i, 0.5f * directionMultiplier);
+                }
+                else
+                {
+                    Debug.LogError("Newly instantiated bullet does not have an EngineDirection component.");
+                }
             }
 
-            // update our shooting state
+            // Update the time tracking variable
             lastFiredTime = currentTime;
+        }
+        else
+        {
+            Debug.Log("Fire delay not yet passed.");
         }
     }
 }

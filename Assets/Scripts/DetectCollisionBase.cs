@@ -2,61 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for detecting collisions based on tag lists and handling them accordingly.
+/// Allows for specifying behaviors as either a blacklist or a whitelist.
+/// </summary>
 public class DetectCollisionBase : MonoBehaviour
 {
-
     [SerializeField]
-    private TagListType tagListType = TagListType.Blacklist;
+    private TagListType tagListType = TagListType.Blacklist;  
 
-    // A list of tags which we use to determine whether to explode or not
-    // Depending on the tagListType (Blacklist or Whitelist)
     [SerializeField]
     private List<string> tags;
 
+    /// <summary>
+    /// Checks for entering triggers and processes collisions based on tag list type.
+    /// </summary>
+    /// <param name="other">The Collider2D of the other GameObject.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
-        bool tagInList = tags.Contains(other.gameObject.tag);
-
-        if (tagListType == TagListType.Blacklist 
-            && tagInList)
-        {
-            // Destroy if it's a Blacklist and the tag IS in the Blacklist
-            ProcessCollision(other.gameObject);
-        }
-        else if (tagListType == TagListType.Whitelist 
-            && !tagInList)
-        {
-            // Destroy if it's a Whitelist and the tag is NOT in the Whitelist
-            ProcessCollision(other.gameObject);
-        }
+        ProcessBasedOnTag(other.gameObject);
     }
 
-    void OnCollisionEnter2D(Collision2D other) {
-        bool tagInList = tags.Contains(other.gameObject.tag);
-
-        if (tagListType == TagListType.Blacklist
-            && tagInList) 
-        {
-            // Destroy if it's a Blacklist and the tag IS in the Blacklist
-            ProcessCollision(other.gameObject);
-        }
-
-        else if (tagListType == TagListType.Whitelist && !tagInList) 
-        {
-            // Destroy if it's a Whitelist and the tag is NOT in the Whitelist
-            ProcessCollision(other.gameObject);
-        }
-    }
-
-    protected virtual void ProcessCollision(GameObject other) 
+    /// <summary>
+    /// Checks for physical collisions and processes collisions based on tag list type.
+    /// </summary>
+    /// <param name="other">The Collision2D of the other GameObject.</param>
+    void OnCollisionEnter2D(Collision2D other)
     {
-        print("Detected collision with " + other.name);
+        ProcessBasedOnTag(other.gameObject);
+    }
+
+    /// <summary>
+    /// Determines whether to process a collision based on the current tag list type and the object's tag.
+    /// </summary>
+    /// <param name="other">The GameObject that collided.</param>
+    private void ProcessBasedOnTag(GameObject other)
+    {
+        bool tagInList = tags.Contains(other.tag);
+        if ((tagListType == TagListType.Blacklist && tagInList) ||
+            (tagListType == TagListType.Whitelist && !tagInList))
+        {
+            ProcessCollision(other);
+        }
+    }
+
+    /// <summary>
+    /// Processes the collision with another GameObject.
+    /// This method is virtual and can be overridden in derived classes to implement specific collision behaviors.
+    /// </summary>
+    /// <param name="other">The GameObject involved in the collision.</param>
+    protected virtual void ProcessCollision(GameObject other)
+    {
+        Debug.Log("Detected collision with " + other.name);
     }
 }
 
-public enum TagListType 
+/// <summary>
+/// Enum to define how the tags list should be interpreted: as a blacklist or a whitelist.
+/// </summary>
+public enum TagListType
 {
     Blacklist,
     Whitelist
 }
-

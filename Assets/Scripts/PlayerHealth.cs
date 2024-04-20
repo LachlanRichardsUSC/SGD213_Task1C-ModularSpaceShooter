@@ -102,7 +102,7 @@ public class PlayerHealth : MonoBehaviour, IHealth
     }
 
     /// <summary>
-    /// Handles the player's death, such as playing animations, notifying other systems, and ultimately destroying the player object.
+    /// Handles the player's death, such as playing animations, notifying other systems and destroying the player object.
     /// </summary>
     public void Die()
     {

@@ -1,72 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// PlayerInput handles all of the player specific input behaviour, and passes the input information
-/// to the appropriate scripts.
+/// Handles all player-specific input behavior, passing the input information
+/// to the appropriate scripts to control movement and weapon firing.
 /// </summary>
 public class PlayerInput : MonoBehaviour
 {
-
-    // local references
+    // Reference to the EngineBase component for movement controls.
     private EngineBase engineBase;
 
+    // Reference to the currently equipped WeaponBase component.
     private WeaponBase weapon;
+
+    /// <summary>
+    /// Gets or sets the WeaponBase component representing the player's current weapon.
+    /// </summary>
     public WeaponBase Weapon
     {
-        get
-        {
-            return weapon;
-        }
-
-        set
-        {
-            weapon = value;
-        }
+        get { return weapon; }
+        set { weapon = value; }
     }
 
     void Start()
     {
+        // Populate references to required components.
         engineBase = GetComponent<EngineBase>();
         weapon = GetComponent<WeaponBase>();
     }
 
     void Update()
     {
-        // read our horizontal input axis
-        float horizontalInput = Input.GetAxis("Horizontal");
-        // if movement input is not zero
-        if (horizontalInput != 0.0f)
-        {
-            // ensure our playerMovementScript is populated to avoid errors
-            if (engineBase != null)
-            {
-                // pass our movement input to our playerMovementScript
-                engineBase.Accelerate(horizontalInput * Vector2.right);
-            }
-        }
+        HandleMovementInput();
+        HandleShootingInput();
+    }
 
-        // if we press the Fire1 button
-        if (Input.GetButton("Fire1"))
+    /// <summary>
+    /// Reads horizontal movement input and commands the player to move accordingly.
+    /// </summary>
+    private void HandleMovementInput()
+    {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        if (horizontalInput != 0.0f && engineBase != null)
         {
-            // if our shootingScript is populated
-            if (weapon != null)
-            {
-                // tell shootingScript to shoot
-                weapon.Shoot();
-            }
+            engineBase.Accelerate(horizontalInput * Vector2.right);
         }
     }
 
     /// <summary>
-    /// SwapWeapon handles creating a new WeaponBase component based on the given weaponType. This
-    /// will popluate the newWeapon's controls and remove the existing weapon ready for usage.
+    /// Checks if the Fire1 button is pressed and commands the weapon to shoot.
     /// </summary>
-    /// <param name="weaponType">The given weaponType to swap our current weapon to, this is an enum in WeaponBase.cs</param>
+    private void HandleShootingInput()
+    {
+        if (Input.GetButton("Fire1") && weapon != null)
+        {
+            weapon.Shoot();
+        }
+    }
+
+    /// <summary>
+    /// Swaps the current weapon to a new weapon type, removing the old weapon component and adding a new one.
+    /// </summary>
+    /// <param name="weaponType">The type of weapon to swap to, defined by the WeaponType enum.</param>
     public void SwapWeapon(WeaponType weaponType)
     {
-        // make a new weapon dependent on the weaponType
         WeaponBase newWeapon = null;
         switch (weaponType)
         {
@@ -78,11 +74,11 @@ public class PlayerInput : MonoBehaviour
                 break;
         }
 
-        // update the data of our newWeapon with that of our current weapon
-        newWeapon.UpdateWeaponControls(weapon);
-        // remove the old weapon
-        Destroy(weapon);
-        // set our current weapon to be the newWeapon
-        weapon = newWeapon;
+        if (newWeapon != null)
+        {
+            newWeapon.UpdateWeaponControls(weapon);
+            Destroy(weapon);
+            weapon = newWeapon;
+        }
     }
 }

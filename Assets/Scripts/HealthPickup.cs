@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class HealthPickup : MonoBehaviour
 {
+    /// <summary>
+    /// Obtainable item in game that gives the player 25 health points.
+    /// Checks whether the object it collides with can receive health with
+    /// a simple boolean check rather than relying on Tags.
+    /// </summary>
     public int healthAmount = 25;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -12,7 +17,7 @@ public class HealthPickup : MonoBehaviour
         if (healthComponent != null && healthComponent.CanReceiveHealth())
         {
             healthComponent.Heal(healthAmount);
-            Destroy(gameObject);  // Destroy the health pickup after it is used.
+            Destroy(gameObject);
         }
     }
 }
