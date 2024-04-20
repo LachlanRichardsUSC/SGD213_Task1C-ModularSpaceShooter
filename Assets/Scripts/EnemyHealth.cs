@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour, IHealth
+public class EnemyHealth : MonoBehaviour, IHealth
 {
     [SerializeField]
     protected int currentHealth;
@@ -18,10 +18,6 @@ public class PlayerHealth : MonoBehaviour, IHealth
         Debug.Log(currentHealth);
     }
 
-    /// <summary>
-    /// Heal handles the functionality of receiving health
-    /// </summary>
-    /// <param name="healingAmount">The amount of health to gain, this value should be positive</param>
     public void Heal(int healingAmount)
     {
         currentHealth += healingAmount;
@@ -31,15 +27,9 @@ public class PlayerHealth : MonoBehaviour, IHealth
         }
     }
 
-    /// <summary>
-    /// TakeDamage handles the functionality for taking damage
-    /// </summary>
-    /// <param name="damageAmount">The amount of damage to lose, this value should be positive</param>
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
-
-        UIManager.instance.UpdatePlayerHealthSlider((float)currentHealth / (float)maxHealth);
 
         if (currentHealth <= 0)
         {
