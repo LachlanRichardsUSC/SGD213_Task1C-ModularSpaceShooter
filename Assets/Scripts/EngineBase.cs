@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class EngineBase : MonoBehaviour
 {
+    /// <summary>
+    /// An extendable Base class that controls the movement of all the objects within the scene.
+    /// Can allow for dynamic acceleration through encapsulates
+    /// and ensures the value never goes below zero.
+    /// </summary>
     [SerializeField]
     private float acceleration = 50f;
 

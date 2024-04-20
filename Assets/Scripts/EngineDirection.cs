@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class EngineDirection : EngineBase
 {
-  
+    /// <summary>
+    /// An inheritance of EngineBase, controls the speed and direction of
+    /// an object in the scene.
+    /// </summary>
     [SerializeField]
     // Initial velocity at which the object starts moving
     private float initialVelocity = 10f;
