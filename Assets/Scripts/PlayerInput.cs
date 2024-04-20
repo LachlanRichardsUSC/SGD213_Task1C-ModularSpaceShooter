@@ -10,7 +10,7 @@ public class PlayerInput : MonoBehaviour
 {
 
     // local references
-    private PlayerMovement playerMovement;
+    private EngineBase engineBase;
 
     private WeaponBase weapon;
     public WeaponBase Weapon
@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour
 
     void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
+        engineBase = GetComponent<EngineBase>();
         weapon = GetComponent<WeaponBase>();
     }
 
@@ -40,10 +40,10 @@ public class PlayerInput : MonoBehaviour
         if (horizontalInput != 0.0f)
         {
             // ensure our playerMovementScript is populated to avoid errors
-            if (playerMovement != null)
+            if (engineBase != null)
             {
                 // pass our movement input to our playerMovementScript
-                playerMovement.MovePlayer(horizontalInput * Vector2.right);
+                engineBase.Accelerate(horizontalInput * Vector2.right);
             }
         }
 

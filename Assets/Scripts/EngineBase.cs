@@ -4,29 +4,59 @@ using UnityEngine;
 
 public class EngineBase : MonoBehaviour
 {
-    // acceleration indicates how fast the enemy accelerates
     [SerializeField]
-    private float acceleration = 5000f;
+    private float acceleration = 50f;
 
-    // local references
-    private Rigidbody2D ourRigidbody;
-
-    void Start()
+    // Encapsulating acceleration to control its modification
+    public float Acceleration
     {
-        // populate ourRigidbody
-        ourRigidbody = GetComponent<Rigidbody2D>();
+        // Ensures acceleration is never negative
+        get => acceleration;
+        set => acceleration = Mathf.Max(0, value);  
+    }
+
+    // Local reference to Rigidbody2D with protected access
+    protected Rigidbody2D rb;
+
+    // Initialization method marked virtual for subclass extension
+    protected virtual void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody2D component missing from GameObject " + gameObject.name);
+        }
     }
 
     /// <summary>
-    /// Accelerate takes a direction as a parameter, and applies a force in this provided direction
-    /// to ourRigidbody, based on the acceleration variables and the delta time.
+    /// Accelerate takes a direction as a parameter and applies a force in this provided direction
+    /// to our Rigidbody based on the acceleration variables and the delta time.
     /// </summary>
-    /// <param name="horizontalInput">A direction vector, expected to be a unit vector (magnitude of 1).</param>
+    /// <param name="direction">A direction vector, expected to be a unit vector (magnitude of 1).</param>
     public void Accelerate(Vector2 direction)
     {
-        //calculate our force to add
-        Vector2 forceToAdd = direction * acceleration * Time.deltaTime;
-        // apply forceToAdd to ourRigidbody
-        ourRigidbody.AddForce(forceToAdd);
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody2D is not initialized.");
+            return;
+        }
+        Vector2 forceToAdd = direction * Acceleration * Time.deltaTime;
+        rb.AddForce(forceToAdd);
+    }
+
+    /// <summary>
+    /// Returns the current speed of the Rigidbody.
+    /// </summary>
+    public float CurrentSpeed
+    {
+        get
+        {
+            if (rb == null)
+            {
+                Debug.LogError("Rigidbody2D is not initialized.");
+                return 0;
+            }
+            return rb.velocity.magnitude;
+        }
     }
 }

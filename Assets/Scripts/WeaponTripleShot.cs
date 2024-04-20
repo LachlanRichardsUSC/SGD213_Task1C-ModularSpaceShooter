@@ -27,7 +27,7 @@ public class WeaponTripleShot : WeaponBase {
                 // create our bullet
                 GameObject newBullet = Instantiate(bullet, bulletSpawnPoint.position, transform.rotation);
                 // set their direction
-                newBullet.GetComponent<MoveConstantly>().Direction = new Vector2(x + 0.5f * i, 0.5f * directionMultiplier);
+                newBullet.GetComponent<EngineDirection>().Direction = new Vector2(x + 0.5f * i, 0.5f * directionMultiplier);
             }
 
             // update our shooting state
