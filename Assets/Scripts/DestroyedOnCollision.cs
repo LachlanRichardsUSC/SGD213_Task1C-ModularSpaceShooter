@@ -8,7 +8,8 @@ using System.Collections.Generic;
 /// </summary>
 public class DestroyedOnCollision : DetectCollisionBase
 {
-    protected override void ProcessCollision(GameObject other) {
+    protected override void ProcessCollision(GameObject other) 
+    {
         base.ProcessCollision(other);
         Destroy(other);
     }

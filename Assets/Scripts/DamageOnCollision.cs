@@ -10,9 +10,15 @@ public class DamageOnCollision : DetectCollisionBase
     protected override void ProcessCollision(GameObject other)
     {
         base.ProcessCollision(other);
-        if (other.GetComponent<IHealth>() != null) {
+        if (other.GetComponent<IHealth>() != null) 
+
+        {
             other.GetComponent<IHealth>().TakeDamage(damageToDeal);
-        } else {
+        }
+
+        else 
+
+        {
             Debug.Log(other.name + " does not have an IHealth component");
         }
 

@@ -35,23 +35,27 @@ public class DetectCollisionBase : MonoBehaviour
         bool tagInList = tags.Contains(other.gameObject.tag);
 
         if (tagListType == TagListType.Blacklist
-            && tagInList) {
+            && tagInList) 
+        {
             // Destroy if it's a Blacklist and the tag IS in the Blacklist
             ProcessCollision(other.gameObject);
-        } else if (tagListType == TagListType.Whitelist
-              && !tagInList) {
+        }
+
+        else if (tagListType == TagListType.Whitelist && !tagInList) 
+        {
             // Destroy if it's a Whitelist and the tag is NOT in the Whitelist
             ProcessCollision(other.gameObject);
         }
     }
 
-    protected virtual void ProcessCollision(GameObject other) {
-
+    protected virtual void ProcessCollision(GameObject other) 
+    {
         print("Detected collision with " + other.name);
     }
 }
 
-public enum TagListType {
+public enum TagListType 
+{
     Blacklist,
     Whitelist
 }

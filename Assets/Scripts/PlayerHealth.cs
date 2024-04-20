@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour, IHealth
     void Start()
     {
         currentHealth = maxHealth;
+        Debug.Log(currentHealth);
     }
 
     // <summary>

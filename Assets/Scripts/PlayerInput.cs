@@ -70,10 +70,10 @@ public class PlayerInput : MonoBehaviour
         WeaponBase newWeapon = null;
         switch (weaponType)
         {
-            case WeaponType.machineGun:
+            case WeaponType.MachineGun:
                 newWeapon = gameObject.AddComponent<WeaponMachineGun>();
                 break;
-            case WeaponType.tripleShot:
+            case WeaponType.TripleShot:
                 newWeapon = gameObject.AddComponent<WeaponTripleShot>();
                 break;
         }
